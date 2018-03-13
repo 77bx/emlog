@@ -25,7 +25,7 @@ $allow_remark = isset($_POST['allow_remark']) ? addslashes(trim($_POST['allow_re
 $ishide = isset($_POST['ishide']) && !empty($_POST['ishide']) && !isset($_POST['pubdf']) ? addslashes($_POST['ishide']) : 'n';
 $password = isset($_POST['password']) ? addslashes(trim($_POST['password'])) : '';
 
-$postTime = $Log_Model->postDate(Option::get('timezone'), $postDate, $date);
+$postTime = $Log_Model->postDate($postDate, $date);
 
 LoginAuth::checkToken();
 
@@ -71,8 +71,7 @@ switch ($action) {
 	case 'autosave':
 		echo "autosave_gid:{$blogid}_df:{$dftnum}_";
 		break;
-	case 'add':
-	case 'edit':
+	case 'save':
 		$tbmsg = '';
 		if ($ishide == 'y') {
 			emDirect("./admin_log.php?pid=draft&active_savedraft=1");

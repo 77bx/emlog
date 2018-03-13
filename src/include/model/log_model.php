@@ -283,20 +283,16 @@ class Log_Model {
 	 * @param string $oldDate
 	 * @return date
 	 */
-	function postDate($timezone = 8, $postDate = null, $oldDate = null) {
-		$timezone = Option::get('timezone');
-		$localtime = time();
-		$logDate = $oldDate ? $oldDate : $localtime;
-		$unixPostDate = '';
-		if ($postDate) {
-			$unixPostDate = emStrtotime($postDate);
-			if ($unixPostDate === false) {
-				$unixPostDate = $logDate;
-			}
-		} else {
-			return $localtime;
+	function postDate($postDate = null, $oldDate = null) {
+		$date = '';
+		if (strtotime($postDate)) {
+			$date = strtotime($postDate);
+		}elseif(strtotime($oldDate)){
+			$date = strtotime($oldDate);
+		}else{
+			$date = time() + Option::get('timezone') * 3600;
 		}
-		return $unixPostDate;
+		return $date - Option::get('timezone') * 3600;
 	}
 
 	/**
