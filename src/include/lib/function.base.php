@@ -4,7 +4,7 @@
  * 基础函数库
  * @copyright (c) Emlog All Rights Reserved
  */
-function __autoload($class) {
+spl_autoload_register(function($class) {
 	$class = strtolower($class);
 	if (file_exists(EMLOG_ROOT . '/include/model/' . $class . '.php')) {
 		require_once(EMLOG_ROOT . '/include/model/' . $class . '.php');
@@ -15,7 +15,7 @@ function __autoload($class) {
 	} else {
 		emMsg($class . '加载失败。');
 	}
-}
+});
 
 /**
  * 去除多余的转义字符
@@ -1047,4 +1047,12 @@ if(!function_exists('hash_hmac')) {
 	$ct['xml'] = 'text/xml';
 	
 	return isset($ct[strtolower($extension)]) ? $ct[strtolower($extension)] : 'text/html';
+}
+
+/*
+ *加密函数
+ *By StarYu
+ */
+function HashPassword($password) {
+	return password_hash(md5($password), PASSWORD_DEFAULT);
 }

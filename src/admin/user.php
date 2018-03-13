@@ -47,8 +47,7 @@ if ($action== 'new') {
 		emDirect('./user.php?error_pwd2=1');
 	}
 
-	$PHPASS = new PasswordHash(8, true);
-	$password = $PHPASS->HashPassword($password);
+	$password = HashPassword($password);
 
 	$User_Model->addUser($login, $password, $role, $ischeck);
 	$CACHE->updateCache(array('sta','user'));
@@ -124,8 +123,7 @@ if ($action=='update') {
 						);
 
 	if (!empty($password)) {
-		$PHPASS = new PasswordHash(8, true);
-		$password = $PHPASS->HashPassword($password);
+		$password = HashPassword($password);
 		$userData['password'] = $password;
 	}
 

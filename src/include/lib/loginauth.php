@@ -111,18 +111,10 @@ class LoginAuth{
 
     /**
      * 将明文密码和数据库加密后的密码进行验证
-     *
-     * @param string $password Plaintext user's password
-     * @param string $hash Hash of the user's password to check against.
-     * @return bool False, if the $password does not match the hashed password
+     * by StarYu
      */
     public static function checkPassword($password, $hash) {
-        global $em_hasher;
-        if (empty($em_hasher)) {
-            $em_hasher = new PasswordHash(8, true);
-        }
-        $check = $em_hasher->CheckPassword($password, $hash);
-        return $check;
+		return password_verify(md5($password),$hash);
     }
 
     /**

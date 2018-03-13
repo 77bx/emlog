@@ -14,8 +14,8 @@ doStripslashes();
 
 $act = isset($_GET['action'])? $_GET['action'] : '';
 
-if (PHP_VERSION < '5.0'){
-    emMsg('您的php版本过低，请选用支持PHP5的环境安装emlog。');
+if (PHP_VERSION < '5.6'){
+    emMsg('您的PHP版本过低，请选用支持PHP7的环境安装emlog。');
 }
 
 if(!$act){
@@ -44,7 +44,7 @@ body {background-color:#F7F7F7;font-family: Arial;font-size: 12px;line-height:15
 <form name="form1" method="post" action="install.php?action=install">
 <div class="main">
 <p class="logo"></p>
-<p class="title">emlog <?php echo Option::EMLOG_VERSION ?> 安装程序</p>
+<p class="title">emlog <?php echo Option::EMLOG_VERSION ?> 修改版 安装程序</p>
 <div class="b">
 <p class="title2">MySQL数据库设置</p>
 <li>
@@ -196,16 +196,16 @@ EOT;
 	}
 	fclose($fp);
 
-	//密码加密存储
-	$PHPASS = new PasswordHash(8, true);
-	$adminpw = $PHPASS->HashPassword($adminpw);
+	//密码加密存储 by StarYu
+	$adminpw =HashPassword($adminpw);
 
 	$dbcharset = 'utf8';
 	$type = 'MYISAM';
-	$table_charset_sql = $DB->getMysqlVersion() > '4.1' ? 'ENGINE='.$type.' DEFAULT CHARSET='.$dbcharset.';' : 'ENGINE='.$type.';';
-    if ($DB->getMysqlVersion() > '4.1' ){
-        $DB->query("ALTER DATABASE `{$db_name}` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;", true);
-    }
+	if($DB->getMysqlVersion() < '5.0'){
+		emMsg('您的MySql版本过低，请选用MySql 5.0以上版本。');
+	}
+	$table_charset_sql =   'ENGINE='.$type.' DEFAULT CHARSET='.$dbcharset.';';
+    $DB->query("ALTER DATABASE `{$db_name}` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;", true);
 
     $widgets = Option::getWidgetTitle();
     $sider_wg = Option::getDefWidget();
@@ -423,7 +423,7 @@ DROP TABLE IF EXISTS {$db_prefix}user;
 CREATE TABLE {$db_prefix}user (
   uid int(10) unsigned NOT NULL auto_increment,
   username varchar(32) NOT NULL default '',
-  password varchar(64) NOT NULL default '',
+  password varchar(255) NOT NULL default '',
   nickname varchar(20) NOT NULL default '',
   role varchar(60) NOT NULL default '',
   ischeck enum('n','y') NOT NULL default 'n',

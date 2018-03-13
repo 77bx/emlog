@@ -52,11 +52,9 @@ if ($action == 'update') {
     }
 
 	if (!empty($newpass)) {
-        $PHPASS = new PasswordHash(8, true);
-		$newpass = $PHPASS->HashPassword($newpass);
+		$newpass = HashPassword($newpass);
 		$User_Model->updateUser(array('password'=>$newpass), UID);
 	}
-
     if (!empty($login)) {
 		$User_Model->updateUser(array('username'=>$login), UID);
 	}
