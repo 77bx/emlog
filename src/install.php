@@ -5,7 +5,7 @@
  */
 
 define('EMLOG_ROOT', dirname(__FILE__));
-define('DEL_INSTALLER', 0);
+define('DEL_INSTALLER', 1);
 
 require_once EMLOG_ROOT.'/include/lib/function.base.php';
 
@@ -297,7 +297,7 @@ INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('blogurl','"
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('icp','');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('footer_info','');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('admin_perpage_num','15');
-INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('rss_output_num','10');
+INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('rss_output_num','0');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('rss_output_fulltext','y');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('index_lognum','10');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('index_comnum','10');
