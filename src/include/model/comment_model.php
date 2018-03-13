@@ -323,7 +323,7 @@ class Comment_Model {
 		}
 		$query = $this->db->query("SELECT allow_remark FROM ".DB_PREFIX."blog WHERE gid=$blogId");
 		$show_remark = $this->db->fetch_array($query);
-		if ($show_remark['allow_remark'] == 'n' || $show_remark === false) {
+		if ($show_remark['allow_remark'] == 'n' || $show_remark === NULL) {
 			return false;
 		}else {
 			return true;
