@@ -15,7 +15,7 @@
 <?php if ($hideCommNum > 0) : 
 $hide_ = $hide_y = $hide_n = '';
 $a = "hide_$hide";
-$$a = "class=\"filter\"";
+${$a} = "class=\"filter\"";
 ?>
 <div class="filters">
 <span <?php echo $hide_; ?>><a href="./comment.php?<?php echo $addUrl_1 ?>">全部</a></span>

@@ -12,11 +12,11 @@ if ($action == '') {
 
     $ex0 = $ex1 = $ex2 = $ex3 = '';
     $t = 'ex'.$isurlrewrite;
-    $$t = 'checked="checked"';
+    ${$t} = 'checked="checked"';
 
     $opt0 = $opt1 = $opt2 = '';
     $t = 'opt'.$log_title_style;
-    $$t = 'selected="selected"';
+    ${$t} = 'selected="selected"';
 
     $isalias = $isalias == 'y' ? 'checked="checked"' : '';
     $isalias_html = $isalias_html == 'y' ? 'checked="checked"' : '';

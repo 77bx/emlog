@@ -83,11 +83,11 @@ $isDisplayUser = !$uid ? "style=\"display:none;\"" : '';
     if(empty($tags)) echo '还没有标签';
     foreach($tags as $val):
 		$a = 'tag_'.$val['tid'];
-		$$a = '';
+		${$a} = '';
 		$b = 'tag_'.$tagId;
-		$$b = "class=\"filter\"";
+		${$b} = "class=\"filter\"";
 	?>
-	<span <?php echo $$a; ?>><a href="./admin_log.php?tagid=<?php echo $val['tid'].$isdraft; ?>"><?php echo $val['tagname']; ?></a></span>
+	<span <?php echo ${$a}; ?>><a href="./admin_log.php?tagid=<?php echo $val['tid'].$isdraft; ?>"><?php echo $val['tagname']; ?></a></span>
 	<?php endforeach;?>
 </div>
 </div>
