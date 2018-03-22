@@ -650,26 +650,6 @@ function getGravatar($email, $s = 40, $d = 'mm', $g = 'g') {
 }
 
 /**
- * 计算时区的时差
- * @param string $remote_tz 远程时区
- * @param string $origin_tz 标准时区
- *
- */
-function getTimeZoneOffset($remote_tz, $origin_tz = 'UTC') {
-    if ($origin_tz === null) {
-        if (!is_string($origin_tz = date_default_timezone_get())) {
-            return false; // A UTC timestamp was returned -- bail out!
-        }
-    }
-    $origin_dtz = new DateTimeZone($origin_tz);
-    $remote_dtz = new DateTimeZone($remote_tz);
-    $origin_dt = new DateTime('now', $origin_dtz);
-    $remote_dt = new DateTime('now', $remote_dtz);
-    $offset = $origin_dtz->getOffset($origin_dt) - $remote_dtz->getOffset($remote_dt);
-    return $offset;
-}
-
-/**
  * 获取指定月份的天数
  */
 function getMonthDayNum($month, $year) {
@@ -913,37 +893,6 @@ function emoFormat($t){
         }
     }
     return $t;
-}
-
-/**
- * hmac 加密
- *
- * @param unknown_type $algo hash算法 md5
- * @param unknown_type $data 用户名和到期时间
- * @param unknown_type $key
- * @return unknown
- */
-if(!function_exists('hash_hmac')) {
-    function hash_hmac($algo, $data, $key) {
-        $packs = array('md5' => 'H32', 'sha1' => 'H40');
-
-        if (!isset($packs[$algo])) {
-            return false;
-        }
-
-        $pack = $packs[$algo];
-
-        if (strlen($key) > 64) {
-            $key = pack($pack, $algo($key));
-        } elseif (strlen($key) < 64) {
-            $key = str_pad($key, 64, chr(0));
-        }
-
-        $ipad = (substr($key, 0, 64) ^ str_repeat(chr(0x36), 64));
-        $opad = (substr($key, 0, 64) ^ str_repeat(chr(0x5C), 64));
-
-        return $algo($opad . pack($pack, $algo($ipad . $data)));
-    }
 }
 
 /**
