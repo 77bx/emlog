@@ -15,7 +15,6 @@ if ($action == '') {
 	$conf_comment_needchinese = $comment_needchinese == 'y' ? 'checked="checked"' : '';
 	$conf_iscomment = $iscomment == 'y' ? 'checked="checked"' : '';
 	$conf_ischkcomment = $ischkcomment == 'y' ? 'checked="checked"' : '';
-	$conf_ismobile = $ismobile == 'y' ? 'checked="checked"' : '';
     $conf_isexcerpt = $isexcerpt == 'y' ? 'checked="checked"' : '';
 	$conf_isthumbnail = $isthumbnail == 'y' ? 'checked="checked"' : '';
 	$conf_isgzipenable = $isgzipenable == 'y' ? 'checked="checked"' : '';
@@ -166,7 +165,6 @@ if ($action == 'mod_config') {
 	'iscomment' => isset($_POST['iscomment']) ? addslashes($_POST['iscomment']) : 'n',
 	'ischkcomment' => isset($_POST['ischkcomment']) ? addslashes($_POST['ischkcomment']) : 'n',
 	'isgzipenable' => isset($_POST['isgzipenable']) ? addslashes($_POST['isgzipenable']) : 'n',
-	'ismobile' => isset($_POST['ismobile']) ? addslashes($_POST['ismobile']) : 'n',
     'isexcerpt' => isset($_POST['isexcerpt']) ? addslashes($_POST['isexcerpt']) : 'n',
     'excerpt_subnum' => isset($_POST['excerpt_subnum']) ? intval($_POST['excerpt_subnum']) : '300',
 	'isthumbnail' => isset($_POST['isthumbnail']) ? addslashes($_POST['isthumbnail']) : 'n',
