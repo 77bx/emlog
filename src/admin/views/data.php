@@ -63,8 +63,8 @@
     </p>
 	<p>将站点内容数据库备份到：
         <select name="bakplace" id="bakplace">
-            <option value="local" selected="selected">本地（自己电脑）</option>
-            <option value="server">服务器空间</option>
+            <option value="local">本地（自己电脑）</option>
+            <option value="server" selected="selected">服务器空间</option>
         </select>
     </p>
     <p id="local_bakzip">压缩成zip包：<input type="checkbox" style="vertical-align:middle;" value="y" name="zipbak" id="zipbak"></p>
