@@ -26,17 +26,18 @@ if ($action == '') {
     extract($blogData);
    	$isdraft = false;
    	$containertitle = '写文章';
+    $orig_date = '';
 	$sorts = $CACHE->readCache('sort');
 	$tagStr = '';
 	$tags = $Tag_Model->getTag();
 	$is_top = '';
 	$is_sortop = '';
-	$is_allow_remark = 'checked="checked"';
+	$is_allow_remark = '';
 	$postDate = date('Y-m-d H:i:s');
-   	$att_frame_url = 'attachment.php?action=selectFile';
+    $att_frame_url = 'attachment.php?action=selectFile';
 
 	include View::getView('header');
-	require_once View::getView('write_log');
+	require_once View::getView('write');
 	include View::getView('footer');
 	View::output();
 }
@@ -68,9 +69,9 @@ if ($action == 'edit') {
 	$is_sortop = $sortop == 'y' ? 'checked="checked"' : '';
 	$is_allow_remark = $allow_remark == 'y' ? 'checked="checked"' : '';
     
-    	$att_frame_url = 'attachment.php?action=attlib&logid='.$logid;
+    $att_frame_url = 'attachment.php?action=attlib&logid='.$logid;
 
 	include View::getView('header');
-	require_once View::getView('write_log');
+	require_once View::getView('write');
 	include View::getView('footer');View::output();
 }

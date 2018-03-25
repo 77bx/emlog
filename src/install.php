@@ -213,7 +213,7 @@ EOT;
     $widget_title = serialize($widgets);
     $widgets = serialize($sider_wg);
 
-	define('BLOG_URL', getBlogUrl());
+    define('BLOG_URL', realUrl());
 
     $sql = "
 DROP TABLE IF EXISTS {$db_prefix}blog;
@@ -237,14 +237,13 @@ CREATE TABLE {$db_prefix}blog (
   allow_remark enum('n','y') NOT NULL default 'y',
   password varchar(255) NOT NULL default '',
   template varchar(255) NOT NULL default '',
-  PRIMARY KEY  (gid),
-  KEY date (date),
+  tags text,
+  PRIMARY KEY (gid),
   KEY author (author),
-  KEY sortid (sortid),
-  KEY type (type),
   KEY views (views),
   KEY comnum (comnum),
-  KEY hide (hide)
+  KEY sortid (sortid),
+  KEY top (top,date)
 )".$table_charset_sql."
 INSERT INTO {$db_prefix}blog (gid,title,date,content,excerpt,author,views,comnum,attnum,top,sortop,hide,allow_remark,password) VALUES (1, '欢迎使用emlog', '".time()."', '恭喜您成功安装了emlog，这是系统自动生成的演示文章。编辑或者删除它，然后开始您的创作吧！', '', 1, 0, 0, 0, 'n', 'n', 'n', 'y', '');
 DROP TABLE IF EXISTS {$db_prefix}attachment;
@@ -297,7 +296,7 @@ INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('blogurl','"
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('icp','');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('footer_info','');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('admin_perpage_num','15');
-INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('rss_output_num','0');
+INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('rss_output_num','10');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('rss_output_fulltext','y');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('index_lognum','10');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('index_comnum','10');
@@ -333,7 +332,7 @@ INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('isexcerpt',
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('excerpt_subnum','300');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('topimg','content/templates/default/images/top/default.jpg');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('custom_topimgs','a:0:{}');
-INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('timezone','8');
+INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('timezone','Asia/Shanghai');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('active_plugins','');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('widget_title','$widget_title');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('custom_widget','a:0:{}');
@@ -341,6 +340,7 @@ INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('widgets1','
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('widgets2','');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('widgets3','');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('widgets4','');
+INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('detect_url','n');
 DROP TABLE IF EXISTS {$db_prefix}link;
 CREATE TABLE {$db_prefix}link (
   id int(10) unsigned NOT NULL auto_increment,
@@ -401,7 +401,19 @@ CREATE TABLE {$db_prefix}user (
 PRIMARY KEY  (uid),
 KEY username (username)
 )".$table_charset_sql."
-INSERT INTO {$db_prefix}user (uid, username, password, role) VALUES (1,'$admin','".$adminpw."','admin');";
+INSERT INTO {$db_prefix}user (uid, username, password, role) VALUES (1,'$admin','".$adminpw."','admin');
+DROP TABLE IF EXISTS {$db_prefix}storage;
+CREATE TABLE {$db_prefix}storage (
+  `sid` int(8) NOT NULL AUTO_INCREMENT,
+  `plugin` varchar(32) NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `type` varchar(8) NOT NULL,
+  `value` text NOT NULL,
+  `createdate` int(11) NOT NULL,
+  `lastupdate` int(11) NOT NULL,
+  PRIMARY KEY (`sid`),
+  UNIQUE KEY `plugin` (`plugin`,`name`)
+)".$table_charset_sql;
 
     $array_sql = preg_split("/;[\r\n]/", $sql);
     foreach($array_sql as $sql){

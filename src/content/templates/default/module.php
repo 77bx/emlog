@@ -106,28 +106,15 @@ function widget_newlog($title){
 <?php
 //widget：热门文章
 function widget_hotlog($title){
-	$index_hotlognum = Option::get('index_hotlognum');
-	$Log_Model = new Log_Model();
-	$randLogs = $Log_Model->getHotLog($index_hotlognum);?>
-	<h4><?php echo $title; ?></h4>
-	<ul class="list-unstyled">
-	<?php foreach($randLogs as $value): ?>
-	<li><a href="<?php echo Url::log($value['gid']); ?>"><?php echo $value['title']; ?></a></li>
-	<?php endforeach; ?>
-	</ul>
-<?php }?>
-<?php
-//widget：随机文章
-function widget_random_log($title){
-	$index_randlognum = Option::get('index_randlognum');
-	$Log_Model = new Log_Model();
-	$randLogs = $Log_Model->getRandLog($index_randlognum);?>
-	<h4><?php echo $title; ?></h4>
-	<ul class="list-unstyled">
-	<?php foreach($randLogs as $value): ?>
-	<li><a href="<?php echo Url::log($value['gid']); ?>"><?php echo $value['title']; ?></a></li>
-	<?php endforeach; ?>
-	</ul>
+    $index_hotlognum = Option::get('index_hotlognum');
+    $Log_Model = new Log_Model();
+    $hotLogs = $Log_Model->getHotLog($index_hotlognum);?>
+    <h4><?php echo $title; ?></h4>
+    <ul class="list-unstyled">
+        <?php foreach($hotLogs as $value): ?>
+        <li><a href="<?php echo Url::log($value['gid']); ?>"><?php echo $value['title']; ?></a></li>
+        <?php endforeach; ?>
+    </ul>
 <?php }?>
 <?php
 //widget：搜索
@@ -268,15 +255,34 @@ function blog_sort($blogid){
 <?php
 //blog：文章标签
 function blog_tag($blogid){
-	global $CACHE;
-	$log_cache_tags = $CACHE->readCache('logtags');
-	if (!empty($log_cache_tags[$blogid])){
-		$tag = '标签:';
-		foreach ($log_cache_tags[$blogid] as $value){
-			$tag .= "	<a href=\"".Url::tag($value['tagurl'])."\">".$value['tagname'].'</a>';
-		}
-		echo $tag;
-	}
+    global $CACHE;
+    $tag_model = new Tag_Model();
+
+    $log_cache_tags = $CACHE->readCache('logtags');
+    if (!empty($log_cache_tags[$blogid])){
+        $tag = '标签:';
+        foreach ($log_cache_tags[$blogid] as $value){
+            $tag .= "	<a href=\"".Url::tag($value['tagurl'])."\">".$value['tagname'].'</a>';
+        }
+        echo $tag;
+    }
+    else
+    {
+        $tag_ids = $tag_model->getTagIdsFromBlogId($blogid);
+        $tag_names = $tag_model->getNamesFromIds($tag_ids);
+
+        if ( ! empty($tag_names))
+        {
+            $tag = '标签:';
+
+            foreach ($tag_names as $key => $value)
+            {
+                $tag .= "	<a href=\"".Url::tag(rawurlencode($value))."\">".htmlspecialchars($value).'</a>';
+            }
+
+            echo $tag;
+        }
+    }
 }
 ?>
 <?php

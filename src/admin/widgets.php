@@ -65,10 +65,6 @@ if ($action == 'setwg') {
 			$index_hotlognum = isset($_POST['index_hotlognum']) ? intval($_POST['index_hotlognum']) : 5;
 			Option::updateOption('index_hotlognum', $index_hotlognum);
 			break;
-		case 'random_log':
-			$index_randlognum = isset($_POST['index_randlognum']) ? intval($_POST['index_randlognum']) : 5;
-			Option::updateOption('index_randlognum', $index_randlognum);
-			break;
 		case 'custom_text':
 			$custom_widget = Option::get('custom_widget');
 			$title = isset($_POST['title']) ? $_POST['title'] : '';

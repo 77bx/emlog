@@ -53,11 +53,7 @@ if ($action == 'mod') {
     $att_frame_url = "attachment.php?action=attlib&logid=$pageId";
     extract($pageData);
 
-	$pageUrl = isset($navibar[$pageId]['url']) ? $navibar[$pageId]['url'] : '' ;
-	$blank = isset($navibar[$pageId]['is_blank']) ? $navibar[$pageId]['is_blank'] : '' ;
-
     $is_allow_remark = $allow_remark == 'y' ? 'checked="checked"' : '';
-	$is_blank = $blank == '_blank' ? 'checked="checked"' : '';
 
     include View::getView('header');
     require_once(View::getView('page'));
