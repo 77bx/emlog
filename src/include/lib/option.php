@@ -150,7 +150,6 @@ class Option {
 		$widget_title = array(
 			'blogger' => '个人资料',
 			'calendar' => '日历',
-			'twitter' => '最新微语',
 			'tag' => '标签',
 			'sort' => '分类',
 			'archive' => '存档',

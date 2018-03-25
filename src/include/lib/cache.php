@@ -144,15 +144,11 @@ class Cache {
   		$data = $this->db->once_fetch_array("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "comment WHERE hide='y' ");
 		$hidecom = $data['total'];
 
-		$data = $this->db->once_fetch_array("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "twitter ");
-		$twnum = $data['total'];
-
 		$sta_cache = array(
 			'lognum' => $lognum,
 			'draftnum' => $draftnum,
 			'comnum' => $comnum,
 			'comnum_all' => $comnum + $hidecom,
-			'twnum' => $twnum,
 			'hidecomnum' => $hidecom,
             'checknum' => $checknum,
 		);
@@ -170,16 +166,12 @@ class Cache {
 
 			$data = $this->db->once_fetch_array("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "comment AS a, " . DB_PREFIX . "blog AS b WHERE a.gid=b.gid and a.hide='y' AND b.author={$row['uid']}");
 			$hidecommentNum = $data['total'];			
-			
-			$data = $this->db->once_fetch_array("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "twitter WHERE author={$row['uid']}");
-			$twnum = $data['total'];
-			
+						
 			$sta_cache[$row['uid']] = array(
 				'lognum' => $logNum,
 				'draftnum' => $draftNum,
 				'commentnum' => $commentNum,
-				'hidecommentnum' => $hidecommentNum,
-				'twnum' => $twnum
+				'hidecommentnum' => $hidecommentNum
 			);
 		}
 
@@ -385,25 +377,6 @@ class Cache {
 		}
 		$cacheData = serialize($logs);
 		$this->cacheWrite($cacheData, 'newlog');
-	}
-	/**
-	 * 最新微语
-	 */
-	private function mc_newtw() {
-		$row = $this->db->fetch_array($this->db->query("SELECT option_value FROM " . DB_PREFIX . "options where option_name='index_newtwnum'"));
-		$index_newtwnum = $row['option_value'];
-		$sql = "SELECT * FROM " . DB_PREFIX . "twitter ORDER BY id DESC LIMIT 0, $index_newtwnum";
-		$res = $this->db->query($sql);
-		$tws = array();
-		while ($row = $this->db->fetch_array($res)) {
-			$row['id'] = $row['id'];
-			$row['t'] = emoFormat($row['content']);
-			$row['date'] = $row['date'];
-			$row['replynum'] = $row['replynum'];
-			$tws[] = $row;
-		}
-		$cacheData = serialize($tws);
-		$this->cacheWrite($cacheData, 'newtw');
 	}
 	/**
 	 * 文章归档缓存

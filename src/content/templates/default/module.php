@@ -74,24 +74,6 @@ function widget_sort($title){
     </ul>
 <?php }?>
 <?php
-//widget：最新微语
-function widget_twitter($title){
-	global $CACHE; 
-	$newtws_cache = $CACHE->readCache('newtw');
-	$istwitter = Option::get('istwitter');
-	?>
-	<h4><?php echo $title; ?></h4>
-	<ul class="list-unstyled">
-	<?php foreach($newtws_cache as $value): ?>
-	<?php $img = empty($value['img']) ? "" : '<a title="查看图片" class="t_img" href="'.BLOG_URL.str_replace('thum-', '', $value['img']).'" target="_blank">&nbsp;</a>';?>
-	<li><?php echo $value['t']; ?><?php echo $img;?><p><?php echo smartDate($value['date']); ?></p></li>
-	<?php endforeach; ?>
-    <?php if ($istwitter == 'y') :?>
-	<p><a href="<?php echo BLOG_URL . 't/'; ?>">更多&raquo;</a></p>
-	<?php endif;?>
-	</ul>
-<?php }?>
-<?php
 //widget：最新评论
 function widget_newcomm($title){
     global $CACHE; 

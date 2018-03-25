@@ -323,18 +323,14 @@ INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('comment_pag
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('comment_pnum','10');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('comment_order','newer');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('login_code','n');
-INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('reply_code','n');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('iscomment','y');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('ischkcomment','y');
-INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('ischkreply','n');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('isurlrewrite','0');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('isalias','n');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('isalias_html','n');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('isgzipenable','n');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('isexcerpt','n');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('excerpt_subnum','300');
-INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('istwitter','y');
-INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('istreply','n');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('topimg','content/templates/default/images/top/default.jpg');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('custom_topimgs','a:0:{}');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('timezone','8');
@@ -371,8 +367,7 @@ CREATE TABLE {$db_prefix}navi (
   PRIMARY KEY  (id)
 )".$table_charset_sql."
 INSERT INTO {$db_prefix}navi (id, naviname, url, taxis, isdefault, type) VALUES (1, '首页', '', 1, 'y', 1);
-INSERT INTO {$db_prefix}navi (id, naviname, url, taxis, isdefault, type) VALUES (2, '微语', 't', 2, 'y', 2);
-INSERT INTO {$db_prefix}navi (id, naviname, url, taxis, isdefault, type) VALUES (3, '登录', 'admin', 3, 'y', 3);
+INSERT INTO {$db_prefix}navi (id, naviname, url, taxis, isdefault, type) VALUES (3, '登录', 'admin', 2, 'y', 2);
 DROP TABLE IF EXISTS {$db_prefix}tag;
 CREATE TABLE {$db_prefix}tag (
   tid int(10) unsigned NOT NULL auto_increment,
@@ -391,31 +386,6 @@ CREATE TABLE {$db_prefix}sort (
   description text NOT NULL,
   template varchar(255) NOT NULL default '',
   PRIMARY KEY  (sid)
-)".$table_charset_sql."
-DROP TABLE IF EXISTS {$db_prefix}twitter;
-CREATE TABLE {$db_prefix}twitter (
-id INT NOT NULL AUTO_INCREMENT,
-content text NOT NULL,
-img varchar(200) DEFAULT NULL,
-author int(10) NOT NULL default '1',
-date bigint(20) NOT NULL,
-replynum int(10) unsigned NOT NULL default '0',
-PRIMARY KEY (id),
-KEY author (author)
-)".$table_charset_sql."
-INSERT INTO {$db_prefix}twitter (id, content, img, author, date, replynum) VALUES (1, '使用微语记录您身边的新鲜事', '', 1, '".time()."', 0);
-DROP TABLE IF EXISTS {$db_prefix}reply;
-CREATE TABLE {$db_prefix}reply (
-  id int(10) unsigned NOT NULL auto_increment,
-  tid int(10) unsigned NOT NULL default '0',
-  date bigint(20) NOT NULL,
-  name varchar(20) NOT NULL default '',
-  content text NOT NULL,
-  hide enum('n','y') NOT NULL default 'n',
-  ip varchar(128) NOT NULL default '',
-  PRIMARY KEY  (id),
-  KEY gid (tid),
-  KEY hide (hide)
 )".$table_charset_sql."
 DROP TABLE IF EXISTS {$db_prefix}user;
 CREATE TABLE {$db_prefix}user (
