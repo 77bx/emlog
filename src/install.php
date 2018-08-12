@@ -56,7 +56,7 @@ body {background-color:#F7F7F7;font-family: Arial;font-size: 12px;line-height:15
     数据库用户名：<br /><input name="dbuser" type="text" class="input" value="">
 </li>
 <li>
-    数据库密码：<br /><input name="password" type="password" class="input">
+    数据库密码：<br /><input name="password" type="text" class="input">
 </li>
 <li>
     数据库名：<br />
@@ -246,7 +246,8 @@ CREATE TABLE {$db_prefix}blog (
   KEY comnum (comnum),
   KEY hide (hide)
 )".$table_charset_sql."
-INSERT INTO {$db_prefix}blog (gid,title,date,content,excerpt,author,views,comnum,attnum,top,sortop,hide,allow_remark,password) VALUES (1, '欢迎使用emlog', '".time()."', '恭喜您成功安装了emlog，这是系统自动生成的演示文章。编辑或者删除它，然后开始您的创作吧！', '', 1, 0, 0, 0, 'n', 'n', 'n', 'y', '');
+INSERT INTO {$db_prefix}blog (gid,title,date,content,excerpt,author,type,views,comnum,attnum,top,sortop,hide,allow_remark,password) VALUES (1, '留言', '".time()."', '这是留言板，请编辑后使用', '', 1, 'page',0, 0, 0, 'n', 'n', 'n', 'y', '');
+INSERT INTO {$db_prefix}blog (gid,title,date,content,excerpt,author,views,comnum,attnum,top,sortop,hide,allow_remark,password) VALUES (2, '欢迎使用emlog', '".time()."', '恭喜您成功安装了emlog，这是系统自动生成的演示文章。编辑或者删除它，然后开始您的创作吧！', '', 1, 0, 0, 0, 'n', 'n', 'n', 'y', '');
 DROP TABLE IF EXISTS {$db_prefix}attachment;
 CREATE TABLE {$db_prefix}attachment (
   aid int(10) unsigned NOT NULL auto_increment,
@@ -373,8 +374,9 @@ CREATE TABLE {$db_prefix}navi (
   PRIMARY KEY  (id)
 )".$table_charset_sql."
 INSERT INTO {$db_prefix}navi (id, naviname, url, taxis, isdefault, type) VALUES (1, '首页', '', 1, 'y', 1);
-INSERT INTO {$db_prefix}navi (id, naviname, url, taxis, isdefault, type) VALUES (2, '微语', 't', 2, 'y', 2);
-INSERT INTO {$db_prefix}navi (id, naviname, url, taxis, isdefault, type) VALUES (3, '登录', 'admin', 3, 'y', 3);
+INSERT INTO {$db_prefix}navi (id, naviname, url, taxis, isdefault, type, type_id) VALUES (2, '留言', '', 2, 'n', 5,1);
+INSERT INTO {$db_prefix}navi (id, naviname, url, taxis, isdefault, type) VALUES (3, '微语', 't', 3, 'n', 2);
+INSERT INTO {$db_prefix}navi (id, naviname, url, taxis, isdefault, type) VALUES (4, '登录', 'admin', 4, 'n', 3);
 DROP TABLE IF EXISTS {$db_prefix}tag;
 CREATE TABLE {$db_prefix}tag (
   tid int(10) unsigned NOT NULL auto_increment,
