@@ -9,7 +9,7 @@ require_once 'globals.php';
 if ($action == '') {
     $retval = glob('../content/backup/*.sql');
     $bakfiles = $retval ? $retval : array();
-	$tables = array('attachment', 'blog', 'comment', 'options', 'navi','sort', 'link','tag','user');
+	$tables = array('attachment', 'blog', 'comment', 'options', 'navi', 'reply', 'sort', 'link','tag','twitter','user');
     doAction('data_prebakup');
 
     include View::getView('header');

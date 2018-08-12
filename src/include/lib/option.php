@@ -6,11 +6,15 @@
 
 class Option {
 	//版本编号
-    const EMLOG_VERSION = '6.0.0-Beta';
+	const EMLOG_VERSION = '5.3.1';
     //头像缩略图最大宽
 	const ICON_MAX_W = 140;
 	//头像缩略图最大高
 	const ICON_MAX_H = 220;
+	//微语图片缩略图最大宽
+	const T_IMG_MAX_W = 180;
+	//微语图片缩略图最大高
+	const T_IMG_MAX_H = 136;
 	//附件上传路径
 	const UPLOADFILE_PATH = '../content/uploadfile/';
 
@@ -32,14 +36,6 @@ class Option {
 						return @unserialize($options_cache[$option]);
 					} else{
 						return array();
-                    }
-                    break;
-                case 'blogurl':
-                    if ($options_cache['detect_url'] == 'y') {
-                        return realUrl();
-                    }
-                    else {
-                        return $options_cache['blogurl'];
 					}
 					break;
 				default:
@@ -154,11 +150,13 @@ class Option {
 		$widget_title = array(
 			'blogger' => '个人资料',
 			'calendar' => '日历',
+			'twitter' => '最新微语',
 			'tag' => '标签',
 			'sort' => '分类',
 			'archive' => '存档',
 			'newcomm' => '最新评论',
 			'newlog' => '最新文章',
+			'random_log' => '随机文章',
 			'hotlog' => '热门文章',
 			'link' => '链接',
 			'search' => '搜索',
@@ -171,7 +169,7 @@ class Option {
 	 * 获取初始安装时的widget列表
 	 */
 	static function getDefWidget() {
-        $default_widget = array('archive','link','search');
+		$default_widget = array('calendar','archive','newcomm','link','search');
 		return $default_widget;
 	}
 

@@ -76,46 +76,6 @@ function getBlogUrl() {
 	}
 }
 
-/**
- * 获取当前访问的base url
- */
-function realUrl() {
-    static $real_url = NULL;
-    
-    if ($real_url !== NULL) {
-        return $real_url;
-    }
-    
-    $emlog_path = EMLOG_ROOT . DIRECTORY_SEPARATOR;
-    $script_path = pathinfo($_SERVER['SCRIPT_NAME'], PATHINFO_DIRNAME);
-    $script_path = str_replace('\\', '/', $script_path);
-    $path_element = explode('/', $script_path);
-    
-    $this_match = '';
-    $best_match = '';
-    
-    $current_deep = 0;
-    $max_deep = count($path_element);
-    
-    while($current_deep < $max_deep) {
-        $this_match = $this_match . $path_element[$current_deep] . DIRECTORY_SEPARATOR;
-        
-        if (substr($emlog_path, strlen($this_match) * (-1)) === $this_match) {
-            $best_match = $this_match;
-        }
-        
-        $current_deep++;
-    }
-    
-    $best_match = str_replace(DIRECTORY_SEPARATOR, '/', $best_match);
-    $real_url  = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
-    $real_url .= $_SERVER["SERVER_NAME"];
-    $real_url .= in_array($_SERVER['SERVER_PORT'], array(80, 443)) ? '' : ':' . $_SERVER['SERVER_PORT'];
-    $real_url .= $best_match;
-    
-    return $real_url;
-}
-
 function isIE6Or7() {
     if (isset($_SERVER['HTTP_USER_AGENT'])) {
         if (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE 7.0") || strpos($_SERVER['HTTP_USER_AGENT'], "MSIE 6.0")) {
@@ -690,6 +650,26 @@ function getGravatar($email, $s = 40, $d = 'mm', $g = 'g') {
 }
 
 /**
+ * 计算时区的时差
+ * @param string $remote_tz 远程时区
+ * @param string $origin_tz 标准时区
+ *
+ */
+function getTimeZoneOffset($remote_tz, $origin_tz = 'UTC') {
+    if ($origin_tz === null) {
+        if (!is_string($origin_tz = date_default_timezone_get())) {
+            return false; // A UTC timestamp was returned -- bail out!
+        }
+    }
+    $origin_dtz = new DateTimeZone($origin_tz);
+    $remote_dtz = new DateTimeZone($remote_tz);
+    $origin_dt = new DateTime('now', $origin_dtz);
+    $remote_dt = new DateTime('now', $remote_dtz);
+    $offset = $origin_dtz->getOffset($origin_dt) - $remote_dtz->getOffset($remote_dt);
+    return $offset;
+}
+
+/**
  * 获取指定月份的天数
  */
 function getMonthDayNum($month, $year) {
@@ -933,6 +913,37 @@ function emoFormat($t){
         }
     }
     return $t;
+}
+
+/**
+ * hmac 加密
+ *
+ * @param unknown_type $algo hash算法 md5
+ * @param unknown_type $data 用户名和到期时间
+ * @param unknown_type $key
+ * @return unknown
+ */
+if(!function_exists('hash_hmac')) {
+    function hash_hmac($algo, $data, $key) {
+        $packs = array('md5' => 'H32', 'sha1' => 'H40');
+
+        if (!isset($packs[$algo])) {
+            return false;
+        }
+
+        $pack = $packs[$algo];
+
+        if (strlen($key) > 64) {
+            $key = pack($pack, $algo($key));
+        } elseif (strlen($key) < 64) {
+            $key = str_pad($key, 64, chr(0));
+        }
+
+        $ipad = (substr($key, 0, 64) ^ str_repeat(chr(0x36), 64));
+        $opad = (substr($key, 0, 64) ^ str_repeat(chr(0x5C), 64));
+
+        return $algo($opad . pack($pack, $algo($ipad . $data)));
+    }
 }
 
 /**

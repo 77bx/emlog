@@ -82,6 +82,19 @@ class Reply_Model {
 	}
 
 	/**
+	 * 删除回复
+	 *
+	 * @param int $replyId
+	 * @return 受影响的twitter id
+	 */
+	function delReply($replyId) {
+		$row = $this->db->once_fetch_array("SELECT hide FROM ".DB_PREFIX."reply WHERE id=$replyId");
+		$this->db->query("DELETE FROM ".DB_PREFIX."reply where id=$replyId");
+		$hide = $row['hide'];
+		return $hide;
+	}
+
+	/**
 	 * 隐藏回复
 	 *
 	 * @param int $replyId

@@ -15,11 +15,17 @@ if ($action == '') {
 	$conf_comment_needchinese = $comment_needchinese == 'y' ? 'checked="checked"' : '';
 	$conf_iscomment = $iscomment == 'y' ? 'checked="checked"' : '';
 	$conf_ischkcomment = $ischkcomment == 'y' ? 'checked="checked"' : '';
+	$conf_ismobile = $ismobile == 'y' ? 'checked="checked"' : '';
     $conf_isexcerpt = $isexcerpt == 'y' ? 'checked="checked"' : '';
 	$conf_isthumbnail = $isthumbnail == 'y' ? 'checked="checked"' : '';
 	$conf_isgzipenable = $isgzipenable == 'y' ? 'checked="checked"' : '';
+	$conf_isxmlrpcenable = $isxmlrpcenable == 'y' ? 'checked="checked"' : '';
 	$conf_isgravatar = $isgravatar == 'y' ? 'checked="checked"' : '';
 	$conf_comment_paging = $comment_paging == 'y' ? 'checked="checked"' : '';
+	$conf_istwitter = $istwitter == 'y' ? 'checked="checked"' : '';
+	$conf_istreply = $istreply == 'y' ? 'checked="checked"' : '';
+	$conf_reply_code = $reply_code == 'y' ? 'checked="checked"' : '';
+	$conf_ischkreply = $ischkreply == 'y' ? 'checked="checked"' : '';
 
 	$ex1 = $ex2 = $ex3 = $ex4 = '';
 	if ($rss_output_fulltext == 'y') {
@@ -161,6 +167,8 @@ if ($action == 'mod_config') {
 	'iscomment' => isset($_POST['iscomment']) ? addslashes($_POST['iscomment']) : 'n',
 	'ischkcomment' => isset($_POST['ischkcomment']) ? addslashes($_POST['ischkcomment']) : 'n',
 	'isgzipenable' => isset($_POST['isgzipenable']) ? addslashes($_POST['isgzipenable']) : 'n',
+	'isxmlrpcenable' => isset($_POST['isxmlrpcenable']) ? addslashes($_POST['isxmlrpcenable']) : 'n',
+	'ismobile' => isset($_POST['ismobile']) ? addslashes($_POST['ismobile']) : 'n',
     'isexcerpt' => isset($_POST['isexcerpt']) ? addslashes($_POST['isexcerpt']) : 'n',
     'excerpt_subnum' => isset($_POST['excerpt_subnum']) ? intval($_POST['excerpt_subnum']) : '300',
 	'isthumbnail' => isset($_POST['isthumbnail']) ? addslashes($_POST['isthumbnail']) : 'n',
@@ -170,11 +178,15 @@ if ($action == 'mod_config') {
 	'comment_paging' => isset($_POST['comment_paging']) ? addslashes($_POST['comment_paging']) : 'n',
 	'comment_pnum' => isset($_POST['comment_pnum']) ? intval($_POST['comment_pnum']) : '',
 	'comment_order' => isset($_POST['comment_order']) ? addslashes($_POST['comment_order']) : 'newer',
+	'istwitter' => isset($_POST['istwitter']) ? addslashes($_POST['istwitter']) : 'n',
+	'istreply' => isset($_POST['istreply']) ? addslashes($_POST['istreply']) : 'n',
+	'ischkreply' => isset($_POST['ischkreply']) ? addslashes($_POST['ischkreply']) : 'n',
+	'reply_code' => isset($_POST['reply_code']) ? addslashes($_POST['reply_code']) : 'n',
+	'index_twnum' => isset($_POST['index_twnum']) ? intval($_POST['index_twnum']) : 10,
     'att_maxsize' => isset($_POST['att_maxsize']) ? intval($_POST['att_maxsize']) : 20480,
     'att_type' => isset($_POST['att_type']) ? str_replace('php', 'x', strtolower(addslashes($_POST['att_type']))) : '',
     'att_imgmaxw' => isset($_POST['att_imgmaxw']) ? intval($_POST['att_imgmaxw']) : 420,
     'att_imgmaxh' => isset($_POST['att_imgmaxh']) ? intval($_POST['att_imgmaxh']) : 460,
-    'detect_url' => isset($_POST['detect_url']) ? addslashes($_POST['detect_url']) : 'n',
 	);
 
 	if ($getData['login_code'] == 'y' && !function_exists("imagecreate") && !function_exists('imagepng')) {

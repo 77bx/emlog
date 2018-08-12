@@ -111,7 +111,7 @@ class LoginAuth{
 
     /**
      * 将明文密码和数据库加密后的密码进行验证
-     * Edit by Star.Yu
+     * by StarYu
      */
     public static function checkPassword($password, $hash) {
 		return password_verify(md5($password),$hash);
@@ -136,13 +136,29 @@ class LoginAuth{
 
     /**
      * 生成登录验证cookie
-     * Edit by Star.Yu
+     *
+     * @param int $user_id user login
+     * @param int $expiration Cookie expiration in seconds
+     * @return string Authentication cookie contents
      */
     private static function generateAuthCookie($user_login, $expiration) {
-    	$data = $user_login . '|' . $expiration . '|' . AUTH_KEY;
-	$hash = HashPassword($data);
+        $key = self::emHash($user_login . '|' . $expiration);
+        $hash = hash_hmac('md5', $user_login . '|' . $expiration, $key);
+
         $cookie = $user_login . '|' . $expiration . '|' . $hash;
+
         return $cookie;
+    }
+
+    /**
+     * Get hash of given string.
+     *
+     * @param string $data Plain text to hash
+     * @return string Hash of $data
+     */
+    private static function emHash($data) {
+        $key = AUTH_KEY;
+        return hash_hmac('md5', $data, $key);
     }
 
     /**
@@ -167,10 +183,11 @@ class LoginAuth{
         if (!empty($expiration) && $expiration < time()) {
             return false;
         }
-        
-	$data = $username . '|' . $expiration . '|' . AUTH_KEY;
 
-        if (!password_verify(md5($data),$hmac)) {
+        $key = self::emHash($username . '|' . $expiration);
+        $hash = hash_hmac('md5', $username . '|' . $expiration, $key);
+
+        if ($hmac != $hash) {
             return false;
         }
 
