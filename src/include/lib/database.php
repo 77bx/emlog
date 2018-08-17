@@ -8,6 +8,6 @@
 class Database {
 
     public static function getInstance() {
-                return MySqlii::getInstance();
+            return MySqlii::getInstance();
         }
 }

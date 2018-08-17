@@ -136,37 +136,18 @@ class LoginAuth{
 
     /**
      * 生成登录验证cookie
-     *
-     * @param int $user_id user login
-     * @param int $expiration Cookie expiration in seconds
-     * @return string Authentication cookie contents
+     * Edit by Star.Yu
      */
     private static function generateAuthCookie($user_login, $expiration) {
-        $key = self::emHash($user_login . '|' . $expiration);
-        $hash = hash_hmac('md5', $user_login . '|' . $expiration, $key);
-
+		$data = $user_login . '|' . $expiration . '|' . AUTH_KEY;
+		$hash = HashPassword($data);
         $cookie = $user_login . '|' . $expiration . '|' . $hash;
-
         return $cookie;
     }
 
     /**
-     * Get hash of given string.
-     *
-     * @param string $data Plain text to hash
-     * @return string Hash of $data
-     */
-    private static function emHash($data) {
-        $key = AUTH_KEY;
-        return hash_hmac('md5', $data, $key);
-    }
-
-    /**
      * 验证cookie
-     * Validates authentication cookie.
-     *
-     * @param string $cookie Optional. If used, will validate contents instead of cookie's
-     * @return bool|int False if invalid cookie, User ID if valid.
+     * Edit by Star.Yu
      */
     private static function validateAuthCookie($cookie = '') {
         if (empty($cookie)) {
@@ -183,11 +164,10 @@ class LoginAuth{
         if (!empty($expiration) && $expiration < time()) {
             return false;
         }
+        
+		$data = $username . '|' . $expiration . '|' . AUTH_KEY;
 
-        $key = self::emHash($username . '|' . $expiration);
-        $hash = hash_hmac('md5', $username . '|' . $expiration, $key);
-
-        if ($hmac != $hash) {
+        if (!CheckPassword($data,$hmac)) {
             return false;
         }
 
