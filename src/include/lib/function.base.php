@@ -990,3 +990,10 @@ function emoFormat($t){
 function HashPassword($password) {
 	return password_hash(md5($password), PASSWORD_DEFAULT);
 }
+/**
+ * 密码check函数
+ * Edit by Star.Yu
+ */
+function CheckPassword($password,$hash) {
+	return password_verify(md5($password),$hash);
+}
