@@ -167,7 +167,7 @@ class LoginAuth{
         
 		$data = $username . '|' . $expiration . '|' . AUTH_KEY;
 
-        if (!CheckPassword($data,$hmac)) {
+        if (!self::CheckPassword($data,$hmac)) {
             return false;
         }
 
