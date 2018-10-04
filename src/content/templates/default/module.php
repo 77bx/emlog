@@ -295,15 +295,34 @@ function blog_sort($blogid){
 <?php
 //blog：文章标签
 function blog_tag($blogid){
-	global $CACHE;
-	$log_cache_tags = $CACHE->readCache('logtags');
-	if (!empty($log_cache_tags[$blogid])){
-		$tag = '标签:';
-		foreach ($log_cache_tags[$blogid] as $value){
-			$tag .= "	<a href=\"".Url::tag($value['tagurl'])."\">".$value['tagname'].'</a>';
-		}
-		echo $tag;
-	}
+    global $CACHE;
+    $tag_model = new Tag_Model();
+
+    $log_cache_tags = $CACHE->readCache('logtags');
+    if (!empty($log_cache_tags[$blogid])){
+        $tag = '标签:';
+        foreach ($log_cache_tags[$blogid] as $value){
+            $tag .= "	<a href=\"".Url::tag($value['tagurl'])."\">".$value['tagname'].'</a>';
+        }
+        echo $tag;
+    }
+    else
+    {
+        $tag_ids = $tag_model->getTagIdsFromBlogId($blogid);
+        $tag_names = $tag_model->getNamesFromIds($tag_ids);
+
+        if ( ! empty($tag_names))
+        {
+            $tag = '标签:';
+
+            foreach ($tag_names as $key => $value)
+            {
+                $tag .= "	<a href=\"".Url::tag(rawurlencode($value))."\">".htmlspecialchars($value).'</a>';
+            }
+
+            echo $tag;
+        }
+    }
 }
 ?>
 <?php

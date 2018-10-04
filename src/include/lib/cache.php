@@ -21,7 +21,7 @@ class Cache {
 	private $newlog_cache;
 	private $newtw_cache;
 	private $record_cache;
-	private $logtags_cache;
+    private $logtags_cache;
 	private $logsort_cache;
 	private $logalias_cache;
 
@@ -438,66 +438,73 @@ class Cache {
 			$record_cache[$j]['lognum'] = $lognum;
 		}
 
-		$cacheData = serialize($record_cache);
-		$this->cacheWrite($cacheData, 'record');
-	}
-	/**
-	 * 文章标签缓存
-	 */
-	private function mc_logtags() {
-		$query = $this->db->query("SELECT gid FROM " . DB_PREFIX . "blog where type='blog'");
-		$log_cache_tags = array();
-		while ($row = $this->db->fetch_array($query)) {
-			$logid = $row['gid'];
-			$tags = array();
-			$tquery = "SELECT tagname,tid FROM " . DB_PREFIX . "tag WHERE gid LIKE '%,$logid,%' " ;
-			$result = $this->db->query($tquery);
-			while ($trow = $this->db->fetch_array($result)) {
-				$trow['tagurl'] = urlencode($trow['tagname']);
-				$trow['tagname'] = htmlspecialchars($trow['tagname']);
-				$trow['tid'] = intval($trow['tid']);
-				$tags[] = $trow;
-			}
-			$log_cache_tags[$logid] = $tags;
-			unset($tags);
+        $cacheData = serialize($record_cache);
+        $this->cacheWrite($cacheData, 'record');
+    }
+    /**
+     * 文章标签缓存
+     */
+    private function mc_logtags() {
+        $tag_model = new Tag_Model();
+
+		$row = $this->db->fetch_array($this->db->query("SELECT option_value FROM " . DB_PREFIX . "options where option_name='index_lognum'"));
+		$index_lognum = $row['option_value'];
+		$sql = "SELECT gid FROM " . DB_PREFIX . "blog WHERE hide='n' and checked='y' and type='blog' ORDER BY top DESC,date DESC LIMIT 0, $index_lognum";
+		$res = $this->db->query($sql);
+		$logs = array();
+		while ($row = $this->db->fetch_array($res)) {
+            $gid = intval($row['gid']);
+            $tag_ids = $tag_model->getTagIdsFromBlogId($gid);
+            $tag_names = $tag_model->getNamesFromIds($tag_ids);
+
+            $tags = array();
+            foreach ($tag_names as $key => $value)
+            {
+                $tag = array();
+                $tag['tagurl'] = rawurlencode($value);
+                $tag['tagname'] = htmlspecialchars($value);
+                $tag['tid'] = intval($key);
+                $tags[] = $tag;
+            }
+            $log_cache_tags[$gid] = $tags;
 		}
-		$cacheData = serialize($log_cache_tags);
-		$this->cacheWrite($cacheData, 'logtags');
-	}
-	/**
-	 * 文章分类缓存
-	 */
-	private function mc_logsort() {
-		$sql = "SELECT gid,sortid FROM " . DB_PREFIX . "blog where type='blog'";
-		$query = $this->db->query($sql);
-		$log_cache_sort = array();
-		while ($row = $this->db->fetch_array($query)) {
-			if ($row['sortid'] > 0) {
-				$res = $this->db->query("SELECT sid,sortname,alias FROM " . DB_PREFIX . "sort where sid=" . $row['sortid']);
-				$srow = $this->db->fetch_array($res);
-				$log_cache_sort[$row['gid']] = array(
-					'name' => htmlspecialchars($srow['sortname']),
-					'id' => htmlspecialchars($srow['sid']),
-					'alias' => htmlspecialchars($srow['alias']),
-				);
-			}
-		}
-		$cacheData = serialize($log_cache_sort);
-		$this->cacheWrite($cacheData, 'logsort');
-	}
-	/**
-	 * 文章别名缓存
-	 */
-	private function mc_logalias() {
-		$sql = "SELECT gid,alias FROM " . DB_PREFIX . "blog where alias!=''";
-		$query = $this->db->query($sql);
-		$log_cache_alias = array();
-		while ($row = $this->db->fetch_array($query)) {
-			$log_cache_alias[$row['gid']] = $row['alias'];
-		}
-		$cacheData = serialize($log_cache_alias);
-		$this->cacheWrite($cacheData, 'logalias');
-	}
+        $cacheData = serialize($log_cache_tags);
+        $this->cacheWrite($cacheData, 'logtags');
+    }
+    /**
+     * 文章分类缓存
+     */
+    private function mc_logsort() {
+        $sql = "SELECT gid,sortid FROM " . DB_PREFIX . "blog where type='blog'";
+        $query = $this->db->query($sql);
+        $log_cache_sort = array();
+        while ($row = $this->db->fetch_array($query)) {
+            if ($row['sortid'] > 0) {
+                $res = $this->db->query("SELECT sid,sortname,alias FROM " . DB_PREFIX . "sort where sid=" . $row['sortid']);
+                $srow = $this->db->fetch_array($res);
+                $log_cache_sort[$row['gid']] = array(
+                    'name' => htmlspecialchars($srow['sortname']),
+                    'id' => htmlspecialchars($srow['sid']),
+                    'alias' => htmlspecialchars($srow['alias']),
+                );
+            }
+        }
+        $cacheData = serialize($log_cache_sort);
+        $this->cacheWrite($cacheData, 'logsort');
+    }
+    /**
+     * 文章别名缓存
+     */
+    private function mc_logalias() {
+        $sql = "SELECT gid,alias FROM " . DB_PREFIX . "blog where alias!=''";
+        $query = $this->db->query($sql);
+        $log_cache_alias = array();
+        while ($row = $this->db->fetch_array($query)) {
+            $log_cache_alias[$row['gid']] = $row['alias'];
+        }
+        $cacheData = serialize($log_cache_alias);
+        $this->cacheWrite($cacheData, 'logalias');
+    }
 
 	/**
 	 * 写入缓存

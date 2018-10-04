@@ -237,14 +237,13 @@ CREATE TABLE {$db_prefix}blog (
   allow_remark enum('n','y') NOT NULL default 'y',
   password varchar(255) NOT NULL default '',
   template varchar(255) NOT NULL default '',
+  tags text,
   PRIMARY KEY  (gid),
-  KEY date (date),
   KEY author (author),
-  KEY sortid (sortid),
-  KEY type (type),
   KEY views (views),
   KEY comnum (comnum),
-  KEY hide (hide)
+  KEY sortid (sortid),
+  KEY top (top,date)
 )".$table_charset_sql."
 INSERT INTO {$db_prefix}blog (gid,title,date,content,excerpt,author,type,views,comnum,attnum,top,sortop,hide,allow_remark,password) VALUES (1, '留言', '".time()."', '这是留言板，请编辑后使用', '', 1, 'page',0, 0, 0, 'n', 'n', 'n', 'y', '');
 INSERT INTO {$db_prefix}blog (gid,title,date,content,excerpt,author,views,comnum,attnum,top,sortop,hide,allow_remark,password) VALUES (2, '欢迎使用emlog', '".time()."', '恭喜您成功安装了emlog，这是系统自动生成的演示文章。编辑或者删除它，然后开始您的创作吧！', '', 1, 0, 0, 0, 'n', 'n', 'n', 'y', '');
@@ -340,7 +339,7 @@ INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('istwitter',
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('istreply','n');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('topimg','content/templates/default/images/top/default.jpg');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('custom_topimgs','a:0:{}');
-INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('timezone','8');
+INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('timezone','Asia/Shanghai');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('active_plugins','');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('widget_title','$widget_title');
 INSERT INTO {$db_prefix}options (option_name, option_value) VALUES ('custom_widget','a:0:{}');

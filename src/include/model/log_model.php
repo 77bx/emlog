@@ -193,7 +193,6 @@ class Log_Model {
 
     /**
      * 获取全部页面列表
-     *
      */
     function getAllPageList() {
         $sql = "SELECT * FROM " . DB_PREFIX . "blog WHERE type='page'";
@@ -343,10 +342,6 @@ class Log_Model {
 
     /**
      * 处理文章别名，防止别名重复
-     *
-     * @param string $alias
-     * @param array $logalias_cache
-     * @param int $logid
      */
     function checkAlias($alias, $logalias_cache, $logid) {
         static $i=2;
@@ -365,9 +360,6 @@ class Log_Model {
 
     /**
      * 加密文章访问验证
-     *
-     * @param string $pwd
-     * @param string $pwd2
      */
     function authPassword($postPwd, $cookiePwd, $logPwd, $logid) {
         $url = BLOG_URL;
