@@ -38,7 +38,7 @@ class Tag_Model {
     function getOneTag($tagId) {
         $tag = array();
         $row = $this->db->once_fetch_array("SELECT tagname,tid FROM ".DB_PREFIX."tag WHERE tid=$tagId");
-        $tag['tagname'] = htmlspecialchars(trim($row['tagname']));
+        $tag['tagname'] = htmlspecialchars(trim(trim($row['tagname']),','));
         $tag['tagid'] = intval($row['tid']);
         return $tag;
     }
@@ -56,7 +56,8 @@ class Tag_Model {
 
     function addTag($tagStr, $blogId) {
         $tagStr = trim($tagStr);
-        $tagStr = str_replace('，', ',', $tagStr);
+		$tagStr = str_replace('，', ',', $tagStr);
+		$tagStr = trim($tagStr,',');
         
         if (empty($tagStr)) {
             return;
@@ -95,7 +96,9 @@ class Tag_Model {
 
     function updateTag($tagStr, $blogId) {
         $tagStr = trim($tagStr);
-        $tagStr = str_replace('，', ',', $tagStr);
+		$tagStr = str_replace('，', ',', $tagStr);
+		$tagStr = trim($tagStr,',');
+        
         
         // 旧的标签Id列表
         $old_tags = $this->getTagIdsFromBlogId($blogId);
@@ -324,9 +327,8 @@ class Tag_Model {
         if ($this->db->num_rows($query) > 0) {
             $result = $this->db->fetch_array($query);
 
-            if ( ! empty($result['gid']))
-            {
-                $blogs = explode(',', $result['gid']);
+            if ( ! empty($result['gid'])){
+                $blogs = explode(',', trim($result['gid'],','));
             }
         }
 

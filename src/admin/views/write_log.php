@@ -36,7 +36,7 @@
         }
         $flg = $value['sid'] == $sortid ? 'selected' : '';
         ?>
-        <option value="<?php echo $value['sid']; ?>"><?php echo $value['sortname']; ?></option>
+        <option value="<?php echo $value['sid']; ?>" <?php echo $flg; ?>><?php echo $value['sortname'];?></option>
         <?php
             $children = $value['children'];
             foreach ($children as $key):
