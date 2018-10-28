@@ -18,18 +18,6 @@ spl_autoload_register(function($class) {
 });
 
 /**
- * 去除多余的转义字符
- */
-function doStripslashes() {
-    if (get_magic_quotes_gpc()) {
-        $_GET = stripslashesDeep($_GET);
-        $_POST = stripslashesDeep($_POST);
-        $_COOKIE = stripslashesDeep($_COOKIE);
-        $_REQUEST = stripslashesDeep($_REQUEST);
-    }
-}
-
-/**
  * 递归去除转义字符
  */
 function stripslashesDeep($value) {
