@@ -24,8 +24,9 @@ if ($action == '') {
         'author' => UID,
     );
     extract($blogData);
-   	$isdraft = false;
-   	$containertitle = '写文章';
+    
+  $isdraft = false;
+  $containertitle = '写文章';
 	$sorts = $CACHE->readCache('sort');
 	$tagStr = '';
 	$tags = $Tag_Model->getTag();
@@ -33,7 +34,7 @@ if ($action == '') {
 	$is_sortop = '';
 	$is_allow_remark = 'checked="checked"';
 	$postDate = date('Y-m-d H:i:s');
-   	$att_frame_url = 'attachment.php?action=selectFile';
+  $att_frame_url = 'attachment.php?action=selectFile';
 
 	include View::getView('header');
 	require_once View::getView('write_log');
@@ -51,9 +52,9 @@ if ($action == 'edit') {
 	$blogData = $Log_Model->getOneLogForAdmin($logid);
 	extract($blogData);
 
-   	$isdraft = $hide == 'y' ? true : false;
-    	$containertitle = $isdraft ? '编辑草稿' : '编辑文章';
-    	$postDate = date('Y-m-d H:i:s', $date);
+  $isdraft = $hide == 'y' ? true : false;
+  $containertitle = $isdraft ? '编辑草稿' : '编辑文章';
+  $postDate = date('Y-m-d H:i:s', $date);
 	$sorts = $CACHE->readCache('sort');
 	//log tag
 	$tags = array();
@@ -68,7 +69,7 @@ if ($action == 'edit') {
 	$is_sortop = $sortop == 'y' ? 'checked="checked"' : '';
 	$is_allow_remark = $allow_remark == 'y' ? 'checked="checked"' : '';
     
-    	$att_frame_url = 'attachment.php?action=attlib&logid='.$logid;
+  $att_frame_url = 'attachment.php?action=attlib&logid='.$logid;
 
 	include View::getView('header');
 	require_once View::getView('write_log');

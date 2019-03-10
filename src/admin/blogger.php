@@ -55,7 +55,7 @@ if ($action == 'update') {
 		$newpass = HashPassword($newpass);
 		$User_Model->updateUser(array('password'=>$newpass), UID);
 	}
-    if (!empty($login)) {
+  if (!empty($login)) {
 		$User_Model->updateUser(array('username'=>$login), UID);
 	}
 

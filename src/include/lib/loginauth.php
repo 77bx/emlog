@@ -54,7 +54,7 @@ class LoginAuth{
                 return self::LOGIN_ERROR_USER;
             }
             $hash = $userData['password'];
-            if (true === self::checkPassword($password, $hash)){
+            if (true === CheckPassword($password, $hash)){
                 return true;
             } else{
                 return self::LOGIN_ERROR_PASSWD;
@@ -110,14 +110,6 @@ class LoginAuth{
     }
 
     /**
-     * 将明文密码和数据库加密后的密码进行验证
-     * by StarYu
-     */
-    public static function checkPassword($password, $hash) {
-		return password_verify(md5($password),$hash);
-    }
-
-    /**
      * 写用于登录验证cookie
      *
      * @param int $user_id User ID
@@ -167,7 +159,7 @@ class LoginAuth{
         
 		$data = $username . '|' . $expiration . '|' . AUTH_KEY;
 
-        if (!self::CheckPassword($data,$hmac)) {
+        if (!CheckPassword($data,$hmac)) {
             return false;
         }
 
@@ -186,7 +178,7 @@ class LoginAuth{
         if (isset($_COOKIE[$token_cookie_name])) {
             return $_COOKIE[$token_cookie_name];
         } else {
-            $token = md5(getRandStr(16));
+            $token = HashPassword(UID);
             setcookie($token_cookie_name, $token, 0, '/');
             return $token;
         }
@@ -197,7 +189,7 @@ class LoginAuth{
      */
     public static function checkToken(){
         $token = isset($_REQUEST['token']) ? addslashes($_REQUEST['token']) : '';
-        if ($token != self::genToken()) {
+        if (!CheckPassword(UID,$token)) {
             emMsg('权限不足，token error');
         }
     }

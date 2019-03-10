@@ -468,8 +468,8 @@ class Cache {
             }
             $log_cache_tags[$gid] = $tags;
 		}
-        $cacheData = serialize($log_cache_tags);
-        $this->cacheWrite($cacheData, 'logtags');
+		$cacheData = serialize($log_cache_tags);
+		$this->cacheWrite($cacheData, 'logtags');
     }
     /**
      * 文章分类缓存

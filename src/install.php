@@ -10,7 +10,6 @@ define('DEL_INSTALLER', 1);
 require_once EMLOG_ROOT.'/include/lib/function.base.php';
 
 header('Content-Type: text/html; charset=UTF-8');
-doStripslashes();
 
 $act = isset($_GET['action'])? $_GET['action'] : '';
 
